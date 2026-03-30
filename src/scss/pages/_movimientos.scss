@@ -1,0 +1,83 @@
+// =============================================
+// src/scss/pages/_movimientos.scss
+// =============================================
+
+// ── Controles del topbar ──────────────────────
+
+.movimientos-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+
+  &__sucursal {
+    display: flex;
+    flex-grow: 1;
+    min-width: 180px;
+  }
+
+  &__fecha {
+    flex: 1;
+    min-width: 130px;
+  }
+
+  &__nuevo {
+    white-space: nowrap;
+  }
+}
+
+// ── Tablet ────────────────────────────────────
+@media (max-width: 1024px) {
+  .movimientos-controls {
+    &__nuevo .btn-label {
+      display: none;
+    }
+  }
+}
+
+// ── Mobile ────────────────────────────────────
+@media (max-width: 767px) {
+  .topbar {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 12px 16px;
+    gap: 10px;
+  }
+
+  .topbar__title {
+    flex: 1;
+  }
+
+  .movimientos-controls {
+    flex-wrap: wrap;
+    width: 100%;
+    order: 3;
+    gap: 8px;
+
+    // Fila 1: sucursal (ancho completo)
+    &__sucursal {
+      order: 1;
+      flex: 1 1 100%;
+    }
+
+    // Fila 2: fechas + botón buscar
+    &__fecha {
+      order: 2;
+      flex: 1;
+      min-width: 0;
+    }
+
+    &__buscar {
+      order: 2;
+    }
+
+    // Fila 3: botón nuevo movimiento (ancho completo)
+    &__nuevo {
+      order: 3;
+      width: 100%;
+      .btn-label {
+        display: inline;
+      }
+    }
+  }
+}

@@ -1,0 +1,56 @@
+// =============================================
+// src/scss/base/_variables.scss
+// =============================================
+
+// Paleta principal
+:root {
+  // Colores principales
+  --color-primary: #e85d04;
+  --color-primary-dark: #c44b00;
+  --color-primary-light: #ff8c42;
+
+  // Neutrales
+  --color-bg: #f4f5f7; // fondo general
+  --color-surface: #ffffff; // cards, panels
+  --color-surface-2: #edeef0; // hover, alternados
+  --color-border: #d9dbe0;
+
+  // Texto
+  --color-text: #1a1d23;
+  --color-text-muted: #6b7280;
+  --color-text-light: #9ca3af;
+  --color-text-inverted: #ffffff;
+
+  // Sidebar
+  --sidebar-bg: #1a1d23;
+  --sidebar-text: #9ca3af;
+  --sidebar-text-active: #ffffff;
+  --sidebar-hover: #252930;
+  --sidebar-active: #e85d04;
+  --sidebar-width: 240px;
+  --sidebar-collapsed-width: 64px;
+
+  // Topbar
+  --topbar-height: 60px;
+  --topbar-bg: #ffffff;
+  --topbar-border: #e5e7eb;
+
+  // Estados
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-info: #3b82f6;
+
+  // Sombras
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+  // Bordes
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  // Transiciones
+  --transition: 0.2s ease;
+}

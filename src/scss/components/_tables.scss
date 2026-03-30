@@ -1,0 +1,203 @@
+// =============================================
+// src/scss/components/_tables.scss
+// =============================================
+
+// ── Controles superiores (length + search) ────
+.dataTables_top,
+.dt-layout-row:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.dt-length {
+  label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+}
+
+.dt-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  label {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+}
+
+// Inputs compartidos de length y search
+.dt-input {
+  padding: 6px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--color-text);
+  background: var(--color-surface);
+  transition: border-color var(--transition);
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(232, 93, 4, 0.1);
+  }
+}
+
+input.dt-input {
+  min-width: 200px;
+}
+
+select.dt-input {
+  cursor: pointer;
+}
+
+// ── Controles inferiores (info + paginación) ──
+.dataTables_bottom,
+.dt-layout-row:last-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-top: 1px solid var(--color-border);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.dt-info {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+// ── Paginación ────────────────────────────────
+.dt-paging {
+  nav {
+    display: flex;
+    gap: 4px;
+  }
+}
+
+.dt-paging-button {
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition:
+    background var(--transition),
+    color var(--transition),
+    border-color var(--transition);
+  min-width: 32px;
+  text-align: center;
+
+  &:hover:not(.disabled):not(.current) {
+    background: var(--color-surface-2);
+    color: var(--color-text);
+    border-color: var(--color-border);
+  }
+
+  &.current {
+    background: var(--color-primary) !important;
+    color: #fff !important;
+    border-color: var(--color-primary) !important;
+    font-weight: 600;
+  }
+
+  &.disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+}
+
+// ── Tabla ─────────────────────────────────────
+table.dataTable {
+  width: 100% !important;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13.5px;
+
+  thead th {
+    background: var(--color-surface-2);
+    color: var(--color-text-muted);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--color-border);
+    white-space: nowrap;
+    user-select: none;
+
+    // Íconos de ordenamiento de DataTables 2.x
+    &.dt-orderable-asc,
+    &.dt-orderable-desc {
+      cursor: pointer;
+    }
+
+    &.dt-ordering-asc .dt-column-order::before,
+    &.dt-ordering-desc .dt-column-order::after {
+      opacity: 1;
+      color: var(--color-primary);
+    }
+  }
+
+  tbody {
+    tr {
+      transition: background var(--transition);
+
+      &:hover td {
+        background: rgba(232, 93, 4, 0.04);
+      }
+
+      td {
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--color-border);
+        color: var(--color-text);
+        vertical-align: middle;
+      }
+
+      &:last-child td {
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+// ── Columna de acciones ───────────────────────
+.table-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+// ── Responsive ────────────────────────────────
+@media (max-width: 767px) {
+  .dataTables_top,
+  .dt-layout-row:first-child {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  input.dt-input {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .dataTables_bottom,
+  .dt-layout-row:last-child {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+}

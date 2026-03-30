@@ -1,0 +1,15 @@
+.btn {
+  &--primary {
+    width: 100%;
+    justify-content: center;
+    padding: 11px;
+    font-size: 16px;
+
+    &:hover,
+    &:focus-visible,
+    &:active {
+      background: var(--color-primary-dark);
+      color: var(--color-text-inverted);
+    }
+  }
+}

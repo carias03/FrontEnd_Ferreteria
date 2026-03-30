@@ -1,0 +1,24 @@
+// =============================================
+// src/scss/main.scss
+// Entry point de estilos — importa todo en orden
+// =============================================
+
+// Bootstrap primero (usa nuestras variables CSS)
+@import "bootstrap/scss/bootstrap";
+
+// Base
+@import "base/variables";
+@import "base/reset";
+
+// Componentes
+@import "components/buttons";
+@import "components/forms";
+@import "components/sidebar";
+@import "components/cards";
+@import "components/tables";
+@import "components/modals";
+
+// Páginas
+@import "pages/login";
+@import "pages/inventario";
+@import "pages/movimientos";

@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23E85D04'/%3E%3Cg transform='translate(50,50)' text-anchor='middle' dominant-baseline='middle' fill='white' font-family='Arial' font-size='55' font-weight='bold'%3E%3Ctext%3E%F0%9F%9B%A0%3C/text%3E%3C/g%3E%3C/svg%3E"
+    />
+    <title>Usuarios — FerreSystem</title>
+  </head>
+  <body>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar__brand">
+        <div class="sidebar__brand-icon"><i class="bi bi-tools"></i></div>
+        <div class="sidebar__brand-text">
+          <span>FerreSystem</span>
+          <span>Gestión de Inventario</span>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <div class="sidebar__section">
+          <div class="sidebar__section-label">General</div>
+          <a href="dashboard.html" class="sidebar__item" data-page="dashboard">
+            <i class="bi bi-grid sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Dashboard</span>
+          </a>
+        </div>
+        <div class="sidebar__section">
+          <div class="sidebar__section-label">Catálogos</div>
+          <a href="productos.html" class="sidebar__item" data-page="productos">
+            <i class="bi bi-box-seam sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Productos</span>
+          </a>
+          <a
+            href="categorias.html"
+            class="sidebar__item"
+            data-page="categorias"
+          >
+            <i class="bi bi-tag sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Categorías</span>
+          </a>
+          <a
+            href="proveedores.html"
+            class="sidebar__item"
+            data-page="proveedores"
+          >
+            <i class="bi bi-truck sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Proveedores</span>
+          </a>
+          <a
+            href="sucursales.html"
+            class="sidebar__item"
+            data-page="sucursales"
+          >
+            <i class="bi bi-shop sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Sucursales</span>
+          </a>
+        </div>
+        <div class="sidebar__section">
+          <div class="sidebar__section-label">Inventario</div>
+          <a
+            href="inventario.html"
+            class="sidebar__item"
+            data-page="inventario"
+          >
+            <i class="bi bi-archive sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Stock</span>
+          </a>
+          <a
+            href="movimientos.html"
+            class="sidebar__item"
+            data-page="movimientos"
+          >
+            <i class="bi bi-arrow-left-right sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Movimientos</span>
+          </a>
+        </div>
+        <div class="sidebar__section">
+          <div class="sidebar__section-label">Operaciones</div>
+          <a href="ventas.html" class="sidebar__item" data-page="ventas">
+            <i class="bi bi-receipt sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Ventas</span>
+          </a>
+          <a href="ordenes.html" class="sidebar__item" data-page="ordenes">
+            <i class="bi bi-cart-check sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Órdenes de Compra</span>
+          </a>
+        </div>
+        <div class="sidebar__section">
+          <div class="sidebar__section-label">Administración</div>
+          <a
+            href="usuarios.html"
+            class="sidebar__item active"
+            data-page="usuarios"
+          >
+            <i class="bi bi-people sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Usuarios</span>
+          </a>
+        </div>
+      </nav>
+      <div class="sidebar__footer">
+        <div class="sidebar__user">
+          <div class="sidebar__user-avatar" id="sidebar-avatar">U</div>
+          <div class="sidebar__user-info">
+            <span id="sidebar-username">Usuario</span>
+            <span id="sidebar-role">Sin rol</span>
+          </div>
+          <button
+            class="sidebar__user-logout"
+            id="btn-logout"
+            title="Cerrar sesión"
+          >
+            <i class="bi bi-box-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="layout">
+      <header class="topbar">
+        <h1 class="topbar__title">Gestión de Usuarios</h1>
+        <div class="topbar__actions">
+          <button class="btn btn--primary" id="btn-nuevo-usuario">
+            <i class="bi bi-person-plus"></i> Nuevo usuario
+          </button>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <div class="card">
+          <div class="card__header">
+            <h3><i class="bi bi-people"></i> Usuarios</h3>
+            <span
+              id="badge-total"
+              class="badge badge--neutral"
+              style="margin-left: 8px; font-size: 12px; font-weight: 500"
+            ></span>
+          </div>
+          <div class="card__body" style="padding: 0">
+            <table id="tabla-usuarios" style="width: 100%">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Username</th>
+                  <th>Nombre completo</th>
+                  <th>Correo</th>
+                  <th>Rol</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- =============================================
+     MODAL PRINCIPAL — crear / editar usuario
+     ============================================= -->
+    <div class="modal-overlay" id="modal-overlay">
+      <div class="modal modal--lg" id="modal">
+        <div class="modal__header">
+          <h3 id="modal-title">Usuario</h3>
+          <button class="modal__close" id="modal-close">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        <div class="modal__body" id="modal-body"></div>
+        <div class="modal__footer" id="modal-footer">
+          <button class="btn btn--secondary" id="modal-cancel">Cancelar</button>
+          <button class="btn btn--primary" id="modal-confirm">Guardar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============================================
+     PANEL DE DETALLE — slide desde la derecha
+     ============================================= -->
+    <div
+      id="detalle-overlay"
+      style="
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.35);
+        z-index: 150;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity 0.2s ease,
+          visibility 0.2s ease;
+      "
+    ></div>
+
+    <aside
+      id="detalle-panel"
+      style="
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        width: 420px;
+        background: var(--color-surface);
+        border-left: 1px solid var(--color-border);
+        box-shadow: var(--shadow-lg);
+        z-index: 151;
+        display: flex;
+        flex-direction: column;
+        transform: translateX(100%);
+        transition: transform 0.25s ease;
+      "
+    >
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 18px 20px;
+          border-bottom: 1px solid var(--color-border);
+        "
+      >
+        <h3 style="font-size: 16px; font-weight: 700; margin: 0">
+          Detalle del usuario
+        </h3>
+        <button
+          id="detalle-close"
+          style="
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            transition: background 0.2s;
+          "
+        >
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div id="detalle-body" style="flex: 1; overflow-y: auto; padding: 20px">
+        <!-- contenido dinámico -->
+      </div>
+
+      <div
+        style="
+          padding: 16px 20px;
+          border-top: 1px solid var(--color-border);
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+        "
+        id="detalle-acciones"
+      >
+        <!-- botones de acción dinámicos -->
+      </div>
+    </aside>
+  </body>
+</html>

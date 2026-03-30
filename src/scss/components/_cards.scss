@@ -1,0 +1,288 @@
+// =============================================
+// src/scss/components/_cards.scss
+// =============================================
+
+// ── Card base ─────────────────────────────────
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--color-border);
+    gap: 12px;
+
+    h2,
+    h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--color-text);
+      margin: 0;
+    }
+  }
+
+  &__body {
+    padding: 20px;
+  }
+
+  &__footer {
+    padding: 12px 20px;
+    border-top: 1px solid var(--color-border);
+    background: var(--color-surface-2);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+  }
+}
+
+// ── Stat cards (dashboard) ────────────────────
+.stat-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+  transition:
+    box-shadow var(--transition),
+    transform var(--transition);
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+
+  &__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+
+    &--primary {
+      background: rgba(232, 93, 4, 0.12);
+      color: var(--color-primary);
+    }
+    &--success {
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--color-success);
+    }
+    &--warning {
+      background: rgba(245, 158, 11, 0.12);
+      color: var(--color-warning);
+    }
+    &--danger {
+      background: rgba(239, 68, 68, 0.12);
+      color: var(--color-danger);
+    }
+    &--info {
+      background: rgba(59, 130, 246, 0.12);
+      color: var(--color-info);
+    }
+  }
+
+  &__info {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  &__value {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--color-text);
+    line-height: 1.1;
+  }
+
+  &__label {
+    font-size: 12.5px;
+    color: var(--color-text-muted);
+    margin-top: 2px;
+  }
+}
+
+// ── Badges de estado ──────────────────────────
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 11.5px;
+  font-weight: 600;
+
+  &--success {
+    background: rgba(16, 185, 129, 0.12);
+    color: #059669;
+  }
+  &--warning {
+    background: rgba(245, 158, 11, 0.12);
+    color: #d97706;
+  }
+  &--danger {
+    background: rgba(239, 68, 68, 0.12);
+    color: #dc2626;
+  }
+  &--info {
+    background: rgba(59, 130, 246, 0.12);
+    color: #2563eb;
+  }
+  &--neutral {
+    background: var(--color-surface-2);
+    color: var(--color-text-muted);
+  }
+  &--primary {
+    background: rgba(232, 93, 4, 0.12);
+    color: var(--color-primary-dark);
+  }
+}
+
+// ── Botones ───────────────────────────────────
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  font-weight: 600;
+  transition:
+    background var(--transition),
+    opacity var(--transition),
+    transform var(--transition);
+  cursor: pointer;
+  border: none;
+  white-space: nowrap;
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &--primary {
+    background: var(--color-primary);
+    color: #fff;
+    &:hover {
+      background: var(--color-primary-dark);
+    }
+  }
+
+  &--secondary {
+    background: var(--color-surface-2);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    &:hover {
+      background: var(--color-border);
+    }
+  }
+
+  &--danger {
+    background: var(--color-danger);
+    color: #fff;
+    &:hover {
+      opacity: 0.88;
+    }
+  }
+
+  &--success {
+    background: var(--color-success);
+    color: #fff;
+    &:hover {
+      opacity: 0.88;
+    }
+  }
+
+  &--warning {
+    background: var(--color-warning);
+    color: #fff;
+    &:hover {
+      opacity: 0.88;
+    }
+  }
+
+  &--sm {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  &--icon {
+    padding: 7px;
+    width: 34px;
+    height: 34px;
+    justify-content: center;
+  }
+}
+
+// ── Formularios ───────────────────────────────
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 16px;
+
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .form-control {
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    color: var(--color-text);
+    background: var(--color-surface);
+    transition:
+      border-color var(--transition),
+      box-shadow var(--transition);
+    width: 100%;
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(232, 93, 4, 0.12);
+    }
+
+    &::placeholder {
+      color: var(--color-text-light);
+    }
+  }
+
+  select.form-control {
+    cursor: pointer;
+  }
+
+  .form-hint {
+    font-size: 11.5px;
+    color: var(--color-text-muted);
+  }
+
+  .form-error {
+    font-size: 11.5px;
+    color: var(--color-danger);
+  }
+}
+
+.form-row {
+  display: grid;
+  gap: 16px;
+
+  &--2 {
+    grid-template-columns: 1fr 1fr;
+  }
+  &--3 {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}

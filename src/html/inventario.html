@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23E85D04'/%3E%3Cg transform='translate(50,50)' text-anchor='middle' dominant-baseline='middle' fill='white' font-family='Arial' font-size='55' font-weight='bold'%3E%3Ctext%3E%F0%9F%9B%A0%3C/text%3E%3C/g%3E%3C/svg%3E"
+    />
+    <title>Inventario — FerreSystem</title>
+  </head>
+  <body>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar__brand">
+        <div class="sidebar__brand-icon"><i class="bi bi-tools"></i></div>
+        <div class="sidebar__brand-text">
+          <span>FerreSystem</span>
+          <span>Gestión de Inventario</span>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <div class="sidebar__section">
+          <div class="sidebar__section-label">General</div>
+          <a href="dashboard.html" class="sidebar__item" data-page="dashboard">
+            <i class="bi bi-grid sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Dashboard</span>
+          </a>
+        </div>
+        <div class="sidebar__section">
+          <div class="sidebar__section-label">Catálogos</div>
+          <a href="productos.html" class="sidebar__item" data-page="productos">
+            <i class="bi bi-box-seam sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Productos</span>
+          </a>
+          <a
+            href="categorias.html"
+            class="sidebar__item"
+            data-page="categorias"
+          >
+            <i class="bi bi-tag sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Categorías</span>
+          </a>
+          <a
+            href="proveedores.html"
+            class="sidebar__item"
+            data-page="proveedores"
+          >
+            <i class="bi bi-truck sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Proveedores</span>
+          </a>
+          <a
+            href="sucursales.html"
+            class="sidebar__item"
+            data-page="sucursales"
+          >
+            <i class="bi bi-shop sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Sucursales</span>
+          </a>
+        </div>
+        <div class="sidebar__section">
+          <div class="sidebar__section-label">Inventario</div>
+          <a
+            href="inventario.html"
+            class="sidebar__item active"
+            data-page="inventario"
+          >
+            <i class="bi bi-archive sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Stock</span>
+          </a>
+          <a
+            href="movimientos.html"
+            class="sidebar__item"
+            data-page="movimientos"
+          >
+            <i class="bi bi-arrow-left-right sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Movimientos</span>
+          </a>
+        </div>
+        <div class="sidebar__section">
+          <div class="sidebar__section-label">Operaciones</div>
+          <a href="ventas.html" class="sidebar__item" data-page="ventas">
+            <i class="bi bi-receipt sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Ventas</span>
+          </a>
+          <a href="ordenes.html" class="sidebar__item" data-page="ordenes">
+            <i class="bi bi-cart-check sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Órdenes de Compra</span>
+          </a>
+        </div>
+        <div class="sidebar__section">
+          <div class="sidebar__section-label">Administración</div>
+          <a href="usuarios.html" class="sidebar__item" data-page="usuarios">
+            <i class="bi bi-people sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Usuarios</span>
+          </a>
+        </div>
+      </nav>
+      <div class="sidebar__footer">
+        <div class="sidebar__user">
+          <div class="sidebar__user-avatar" id="sidebar-avatar">U</div>
+          <div class="sidebar__user-info">
+            <span id="sidebar-username">Usuario</span>
+            <span id="sidebar-role">Sin rol</span>
+          </div>
+          <button
+            class="sidebar__user-logout"
+            id="btn-logout"
+            title="Cerrar sesión"
+          >
+            <i class="bi bi-box-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="layout">
+      <header class="topbar">
+        <button class="topbar__menu-btn" id="sidebar-toggle" aria-label="Menú">
+          <i class="bi bi-list"></i>
+        </button>
+        <h1 class="topbar__title">Stock</h1>
+
+        <div class="topbar__actions inventario-controls">
+          <!-- Select sucursal con wrapper para el chevron -->
+          <div class="select-wrapper inventario-controls__sucursal">
+            <select id="select-sucursal" class="form-control">
+              <option value="">Cargando sucursales...</option>
+            </select>
+            <i class="bi bi-chevron-down select-icon"></i>
+          </div>
+
+          <!-- Select estado con wrapper -->
+          <div class="select-wrapper inventario-controls__estado">
+            <select id="select-estado" class="form-control">
+              <option value="">Todos</option>
+              <option value="BAJO">Stock bajo</option>
+              <option value="OK">OK</option>
+              <option value="ALTO">Stock alto</option>
+            </select>
+            <i class="bi bi-chevron-down select-icon"></i>
+          </div>
+
+          <button
+            class="btn btn--primary inventario-controls__btn"
+            id="btn-agregar-inventario"
+          >
+            <i class="bi bi-plus-lg"></i>
+            <span class="btn-label">Agregar al inventario</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <!-- Alerta stock bajo -->
+        <div id="alerta-stock-bajo" style="display: none; margin-bottom: 16px">
+          <div class="card" style="border-color: var(--color-warning)">
+            <div
+              class="card__body"
+              style="
+                padding: 12px 16px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+              "
+            >
+              <i
+                class="bi bi-exclamation-triangle"
+                style="
+                  color: var(--color-warning);
+                  font-size: 18px;
+                  flex-shrink: 0;
+                "
+              ></i>
+              <span
+                id="alerta-texto"
+                style="font-size: 13.5px; font-weight: 600"
+              ></span>
+              <a
+                href="#"
+                id="alerta-link"
+                style="
+                  margin-left: auto;
+                  font-size: 13px;
+                  color: var(--color-primary);
+                "
+              >
+                Ver productos
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabla -->
+        <div class="card">
+          <div class="card__header">
+            <h3>
+              <i class="bi bi-archive"></i>
+              <span id="titulo-inventario">Inventario</span>
+              <span
+                id="badge-total"
+                class="badge badge--neutral"
+                style="margin-left: 8px; font-size: 12px"
+              ></span>
+            </h3>
+          </div>
+          <div class="card__body" style="padding: 0; overflow-x: auto">
+            <table id="tabla-inventario" style="width: 100%">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Producto</th>
+                  <th>Unidad</th>
+                  <th>Stock actual</th>
+                  <th>Mín.</th>
+                  <th>Máx.</th>
+                  <th>Estado</th>
+                  <th style="text-align: center">Acciones</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal base -->
+    <div class="modal-overlay" id="modal-overlay">
+      <div class="modal" id="modal">
+        <div class="modal__header">
+          <h3 id="modal-title">Título</h3>
+          <button class="modal__close" id="modal-close">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        <div class="modal__body" id="modal-body"></div>
+        <div class="modal__footer" id="modal-footer">
+          <button class="btn btn--secondary" id="modal-cancel">Cancelar</button>
+          <button class="btn btn--primary" id="modal-confirm">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,61 @@
+// =============================================
+// src/scss/components/_forms.scss
+// Estilos para formularios (inputs, selects, etc)
+// =============================================
+
+// ─── Estilos generales de inputs y selects ────────────────────────────────────
+
+.form-control {
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  color: var(--color-text);
+  background: var(--color-surface);
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition);
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(232, 93, 4, 0.12);
+  }
+
+  &::placeholder {
+    color: var(--color-text-light);
+  }
+}
+
+// ─── Select wrapper con icono ────────────────────────────────────────────────
+
+.select-wrapper {
+  position: relative;
+  display: inline-block;
+
+  select.form-control {
+    appearance: none;
+    padding-right: 36px;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .select-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: var(--color-text-muted);
+    pointer-events: none;
+    transition: color 0.2s ease;
+  }
+
+  &:hover .select-icon {
+    color: var(--color-text);
+  }
+
+  select.form-control:focus + .select-icon {
+    color: var(--color-primary);
+  }
+}

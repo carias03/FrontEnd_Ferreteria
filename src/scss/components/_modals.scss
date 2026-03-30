@@ -1,0 +1,94 @@
+// =============================================
+// src/scss/components/_modals.scss
+// =============================================
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+
+  &.active {
+    display: flex;
+  }
+}
+
+.modal {
+  position: relative;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--color-border);
+    flex-shrink: 0;
+
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--color-text);
+      margin: 0;
+    }
+  }
+
+  &__close {
+    color: var(--color-text-muted);
+    font-size: 18px;
+    transition: color var(--transition);
+    padding: 4px;
+    border-radius: var(--radius-sm);
+
+    &:hover {
+      color: var(--color-text);
+      background: var(--color-surface-2);
+    }
+  }
+
+  &__body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+
+    p {
+      margin: 0;
+      line-height: 1.6;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 14px 20px;
+    border-top: 1px solid var(--color-border);
+    flex-shrink: 0;
+  }
+}
+
+// ── Mobile: modal como sheet desde abajo ──────
+@media (max-width: 767px) {
+  .modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .modal {
+    max-width: 100%;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    max-height: 85vh;
+  }
+}

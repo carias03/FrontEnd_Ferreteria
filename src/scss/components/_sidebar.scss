@@ -1,0 +1,480 @@
+// =============================================
+// src/scss/components/_sidebar.scss
+// =============================================
+//
+// Breakpoints:
+//   Mobile  < 768px  → sidebar fuera de pantalla, entra como overlay al abrir
+//   Tablet  768–1024px → sidebar colapsado (solo íconos, 64px)
+//   Desktop > 1024px → sidebar completo (240px)
+//
+// Clases aplicadas en <body> por sidebar.js:
+//   .sidebar-open     → mobile: sidebar visible + overlay activo
+//   .sidebar-collapsed → tablet/desktop: sidebar colapsado a íconos
+
+// ── Overlay (mobile) ──────────────────────────
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+  opacity: 0;
+  transition: opacity var(--transition);
+
+  .sidebar-open & {
+    display: block;
+    opacity: 1;
+  }
+}
+
+// ── Sidebar base ──────────────────────────────
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: var(--sidebar-width); // 240px
+  background: var(--sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  transition:
+    width var(--transition),
+    transform var(--transition);
+  z-index: 100;
+  overflow: hidden;
+
+  // ── Logo / marca ────────────────────────────
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 20px;
+    height: var(--topbar-height);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    flex-shrink: 0;
+
+    &-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--color-primary);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 18px;
+      color: #fff;
+    }
+
+    &-text {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition:
+        opacity var(--transition),
+        width var(--transition);
+
+      span:first-child {
+        font-size: 13px;
+        font-weight: 700;
+        color: #fff;
+        white-space: nowrap;
+        letter-spacing: 0.3px;
+      }
+
+      span:last-child {
+        font-size: 10px;
+        color: var(--sidebar-text);
+        white-space: nowrap;
+      }
+    }
+  }
+
+  // ── Navegación ──────────────────────────────
+  &__nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 0;
+
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+
+  &__section {
+    margin-bottom: 4px;
+
+    &-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--sidebar-text);
+      padding: 12px 20px 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      opacity: 1;
+      transition: opacity var(--transition);
+    }
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 20px;
+    color: var(--sidebar-text);
+    cursor: pointer;
+    transition:
+      background var(--transition),
+      color var(--transition);
+    white-space: nowrap;
+    position: relative;
+    border-radius: 0;
+
+    &:hover {
+      background: var(--sidebar-hover);
+      color: var(--sidebar-text-active);
+    }
+
+    &.active {
+      color: var(--sidebar-text-active);
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: var(--sidebar-active);
+        border-radius: 0 2px 2px 0;
+      }
+
+      .sidebar__item-icon {
+        color: var(--color-primary);
+      }
+    }
+
+    &-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+      width: 20px;
+      text-align: center;
+    }
+
+    &-label {
+      font-size: 13.5px;
+      font-weight: 500;
+      overflow: hidden;
+      transition: opacity var(--transition);
+    }
+  }
+
+  // ── Footer / usuario ────────────────────────
+  &__footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 12px;
+    flex-shrink: 0;
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background var(--transition);
+
+    &:hover {
+      background: var(--sidebar-hover);
+    }
+
+    &-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    &-info {
+      overflow: hidden;
+      flex: 1;
+      transition: opacity var(--transition);
+
+      span {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      span:first-child {
+        font-size: 13px;
+        font-weight: 600;
+        color: #fff;
+      }
+
+      span:last-child {
+        font-size: 11px;
+        color: var(--sidebar-text);
+      }
+    }
+
+    &-logout {
+      color: var(--sidebar-text);
+      font-size: 16px;
+      flex-shrink: 0;
+      transition:
+        color var(--transition),
+        opacity var(--transition);
+
+      &:hover {
+        color: var(--color-danger);
+      }
+    }
+  }
+
+  // ── Estado colapsado (tablet / desktop toggle) ──
+  &.collapsed {
+    width: var(--sidebar-collapsed-width); // 64px
+
+    .sidebar__brand-text,
+    .sidebar__section-label,
+    .sidebar__item-label,
+    .sidebar__user-info,
+    .sidebar__user-logout {
+      opacity: 0;
+      pointer-events: none;
+      width: 0;
+      overflow: hidden;
+    }
+
+    .sidebar__item {
+      justify-content: center;
+      padding: 10px 0;
+    }
+
+    .sidebar__user {
+      justify-content: center;
+    }
+
+    // Tooltip nativo al hover sobre íconos colapsados
+    .sidebar__item[title],
+    .sidebar__item-icon {
+      pointer-events: auto;
+    }
+  }
+}
+
+// ── Layout principal ──────────────────────────
+.layout {
+  margin-left: var(--sidebar-width);
+  min-height: 100vh;
+  transition: margin-left var(--transition);
+  display: flex;
+  flex-direction: column;
+
+  // Cuando el sidebar está colapsado
+  .sidebar.collapsed ~ & {
+    margin-left: var(--sidebar-collapsed-width);
+  }
+}
+
+// ── Topbar ────────────────────────────────────
+.topbar {
+  position: sticky;
+  top: 0;
+  height: var(--topbar-height);
+  background: var(--topbar-bg);
+  border-bottom: 1px solid var(--topbar-border);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 12px;
+  z-index: 50;
+  box-shadow: var(--shadow-sm);
+
+  &__menu-btn {
+    display: none; // oculto en desktop
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    font-size: 20px;
+    flex-shrink: 0;
+    transition:
+      background var(--transition),
+      color var(--transition);
+
+    &:hover {
+      background: var(--color-surface-2);
+      color: var(--color-text);
+    }
+  }
+
+  &__title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--color-text);
+    flex: 1;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+// ── Área de contenido ─────────────────────────
+.page-content {
+  flex: 1;
+  padding: 24px;
+}
+
+// ── Stats grid (dashboard) ────────────────────
+// Reemplaza el .form-row--3 hardcodeado —
+// así el grid se adapta solo al espacio disponible
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+// =============================================
+// RESPONSIVE
+// =============================================
+
+// ── Tablet (768px – 1024px) ───────────────────
+@media (max-width: 1024px) {
+  .sidebar {
+    // En tablet el sidebar arranca colapsado
+    width: var(--sidebar-collapsed-width);
+
+    .sidebar__brand-text,
+    .sidebar__section-label,
+    .sidebar__item-label,
+    .sidebar__user-info,
+    .sidebar__user-logout {
+      opacity: 0;
+      pointer-events: none;
+      width: 0;
+      overflow: hidden;
+    }
+
+    .sidebar__item {
+      justify-content: center;
+      padding: 10px 0;
+    }
+
+    .sidebar__user {
+      justify-content: center;
+    }
+
+    // Al abrir desde el toggle se expande
+    &.open {
+      width: var(--sidebar-width);
+
+      .sidebar__brand-text,
+      .sidebar__section-label,
+      .sidebar__item-label,
+      .sidebar__user-info,
+      .sidebar__user-logout {
+        opacity: 1;
+        pointer-events: auto;
+        width: auto;
+      }
+
+      .sidebar__item {
+        justify-content: flex-start;
+        padding: 10px 20px;
+      }
+
+      .sidebar__user {
+        justify-content: flex-start;
+      }
+    }
+  }
+
+  .layout {
+    margin-left: var(--sidebar-collapsed-width);
+  }
+
+  .sidebar.open ~ .layout {
+    margin-left: var(--sidebar-width);
+  }
+
+  .topbar__menu-btn {
+    display: flex;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+// ── Mobile (< 768px) ──────────────────────────
+@media (max-width: 767px) {
+  .sidebar {
+    // Fuera de pantalla por defecto
+    transform: translateX(-100%);
+    width: var(--sidebar-width); // ancho completo al abrirse
+
+    // Resetear estado colapsado de tablet
+    .sidebar__brand-text,
+    .sidebar__section-label,
+    .sidebar__item-label,
+    .sidebar__user-info,
+    .sidebar__user-logout {
+      opacity: 1;
+      pointer-events: auto;
+      width: auto;
+    }
+
+    .sidebar__item {
+      justify-content: flex-start;
+      padding: 10px 20px;
+    }
+
+    .sidebar__user {
+      justify-content: flex-start;
+    }
+
+    // Al abrir: desliza desde la izquierda
+    &.open {
+      transform: translateX(0);
+    }
+  }
+
+  .layout {
+    margin-left: 0; // ocupa toda la pantalla
+  }
+
+  .topbar {
+    padding: 0 16px;
+  }
+
+  .topbar__menu-btn {
+    display: flex;
+  }
+
+  .page-content {
+    padding: 16px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr; // tarjetas apiladas en mobile
+  }
+}
