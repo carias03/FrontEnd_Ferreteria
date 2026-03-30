@@ -17,8 +17,8 @@ const isDev = window.location.hostname === "localhost";
 
 // Prefijos dinámicos según entorno
 const API_PREFIXES = {
-  users: isDev ? "/users" : process.env.USERS_API_URL,
-  inv: isDev ? "/inv" : process.env.INV_API_URL,
+  users: isDev ? "/api/users" : process.env.USERS_API_URL,
+  inv: isDev ? "/api/inv" : process.env.INV_API_URL,
 };
 
 // ==============================

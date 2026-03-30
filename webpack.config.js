@@ -111,18 +111,34 @@ module.exports = (env, argv) => {
       port: 3000,
       hot: true,
       open: true,
-      historyApiFallback: { index: "/login.html" },
+
+      historyApiFallback: {
+        rewrites: [
+          { from: /^\/$/, to: "/login.html" },
+          { from: /^\/login$/, to: "/login.html" },
+          { from: /^\/dashboard$/, to: "/dashboard.html" },
+          { from: /^\/productos$/, to: "/productos.html" },
+          { from: /^\/categorias$/, to: "/categorias.html" },
+          { from: /^\/proveedores$/, to: "/proveedores.html" },
+          { from: /^\/sucursales$/, to: "/sucursales.html" },
+          { from: /^\/inventario$/, to: "/inventario.html" },
+          { from: /^\/movimientos$/, to: "/movimientos.html" },
+          { from: /^\/ventas$/, to: "/ventas.html" },
+          { from: /^\/ordenes$/, to: "/ordenes.html" },
+          { from: /^\/usuarios$/, to: "/usuarios.html" },
+        ],
+      },
 
       proxy: [
         {
-          context: ["/inv"],
+          context: ["/api/inv"],
           target: "http://localhost:8081",
-          pathRewrite: { "^/inv": "" },
+          pathRewrite: { "^/api/inv": "" },
         },
         {
-          context: ["/users"],
+          context: ["/api/users"],
           target: "http://localhost:8080",
-          pathRewrite: { "^/users": "" },
+          pathRewrite: { "^/api/users": "" },
         },
       ],
     },
