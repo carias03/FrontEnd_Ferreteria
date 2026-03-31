@@ -218,10 +218,14 @@ async function manejarAcciones(e) {
 
 async function abrirAgregarInventario() {
   try {
-    // IDs ya en inventario para esta sucursal (no ofrecer duplicados)
+    // Excluir productos ya registrados en esta sucursal (independientemente
+    // de si están activos o no) para evitar duplicados en el inventario.
     const yaRegistrados = new Set(
       inventarioActual.map((i) => i.producto?.idProducto),
     );
+
+    // Solo se pueden agregar productos ACTIVOS — no tiene sentido dar de alta
+    // inventario para un producto desactivado.
     const productos = await store.getProductosActivos();
     const disponibles = productos
       .filter((p) => !yaRegistrados.has(p.idProducto))

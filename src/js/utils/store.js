@@ -134,6 +134,17 @@ export const store = {
     return lista.map((p) => ({ value: p.idProducto, label: p.nombre }));
   },
 
+  // ── Mapa idProducto → producto (incluye inactivos, para enriquecer tablas) ─
+
+  async getProductosMap() {
+    const lista = await this.getProductos(); // todos, sin filtrar por estado
+    const mapa = {};
+    lista.forEach((p) => {
+      mapa[p.idProducto] = p;
+    });
+    return mapa;
+  },
+
   // ── Mapa idUsuario → username (para enriquecer tablas) ───────────────────
 
   async getMapaUsuarios() {

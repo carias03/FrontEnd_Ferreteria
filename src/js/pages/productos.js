@@ -20,7 +20,7 @@ requireAuth();
 // ─── Estado local ─────────────────────────────────────────────────────────────
 
 let tabla = null;
-let FIELDS = []; // se construye después de cargar catálogos
+let FIELDS = [];
 
 // ─── DOM ──────────────────────────────────────────────────────────────────────
 
@@ -28,13 +28,11 @@ const btnNuevo = document.getElementById("btn-nuevo-producto");
 const badgeTotal = document.getElementById("badge-total");
 
 // ─── Construir FIELDS con catálogos del store ─────────────────────────────────
-// Se llama una sola vez al iniciar. Si el store ya tiene los datos en caché
-// (porque otra página los cargó antes), no hace ninguna llamada al backend.
 
 async function buildFields() {
   const [categoriasOptions, proveedoresOptions] = await Promise.all([
     store.getCategoriasOptions(),
-    store.getProveedoresOptions(true), // true = incluir "Sin proveedor"
+    store.getProveedoresOptions(true),
   ]);
 
   FIELDS = [
@@ -131,23 +129,36 @@ function inicializarTabla(data) {
           `<span style="color:var(--color-text-muted);font-style:italic">—</span>`,
       },
       {
+        title: "Estado",
+        data: null,
+        render: (row) =>
+          row.estado !== false
+            ? `<span class="badge badge--success">Activo</span>`
+            : `<span class="badge badge--neutral">Inactivo</span>`,
+      },
+      {
         title: "Acciones",
         data: null,
         orderable: false,
         className: "text-center",
-        render: (row) => `
-                    <div class="table-actions" style="justify-content:center">
-                        <button class="btn btn--secondary btn--sm btn--icon btn-editar"
-                                data-id="${row.idProducto}" title="Editar">
-                            <i class="bi bi-pencil"></i>
-                        </button>
-                        <button class="btn btn--danger btn--sm btn--icon btn-eliminar"
-                                data-id="${row.idProducto}"
-                                data-nombre="${row.nombre}"
-                                title="Eliminar">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </div>`,
+        render: (row) => {
+          const activo = row.estado !== false;
+          return `
+            <div class="table-actions" style="justify-content:center">
+              <button class="btn btn--secondary btn--sm btn--icon btn-editar"
+                      data-id="${row.idProducto}" title="Editar">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn ${activo ? "btn--danger" : "btn--secondary"} btn--sm btn-toggle-estado"
+                      data-id="${row.idProducto}"
+                      data-nombre="${row.nombre}"
+                      data-activo="${activo}"
+                      title="${activo ? "Desactivar" : "Reactivar"}">
+                <i class="bi ${activo ? "bi-slash-circle" : "bi-arrow-counterclockwise"}"></i>
+                ${activo ? "Desactivar" : "Reactivar"}
+              </button>
+            </div>`;
+        },
       },
     ],
   });
@@ -157,7 +168,7 @@ function inicializarTabla(data) {
 
 async function cargarProductos() {
   try {
-    const data = await store.getProductosActivos();
+    const data = await store.getProductos();
 
     badgeTotal.textContent = `${data.length} ${data.length === 1 ? "producto" : "productos"}`;
 
@@ -179,14 +190,17 @@ async function cargarProductos() {
 
 async function manejarAcciones(e) {
   const btnEditar = e.target.closest(".btn-editar");
-  const btnEliminar = e.target.closest(".btn-eliminar");
+  const btnToggle = e.target.closest(".btn-toggle-estado");
 
   if (btnEditar) await abrirEditar(Number(btnEditar.dataset.id));
-  if (btnEliminar)
-    confirmarEliminar(
-      Number(btnEliminar.dataset.id),
-      btnEliminar.dataset.nombre,
+  if (btnToggle) {
+    const activo = btnToggle.dataset.activo === "true";
+    confirmarToggleEstado(
+      Number(btnToggle.dataset.id),
+      btnToggle.dataset.nombre,
+      activo,
     );
+  }
 }
 
 // ─── Crear ────────────────────────────────────────────────────────────────────
@@ -211,9 +225,6 @@ async function abrirEditar(id) {
   try {
     const producto = await productosApi.getById(id);
 
-    // El JSON devuelve categoria y proveedor como objetos anidados.
-    // El modal necesita los IDs en el nivel raíz para preseleccionar
-    // los selects correctamente.
     const datosFormulario = {
       codigo: producto.codigo,
       nombre: producto.nombre,
@@ -243,25 +254,41 @@ async function abrirEditar(id) {
   }
 }
 
-// ─── Eliminar ─────────────────────────────────────────────────────────────────
+// ─── Desactivar / Reactivar ───────────────────────────────────────────────────
 
-function confirmarEliminar(id, nombre) {
+function confirmarToggleEstado(id, nombre, activo) {
   modal.confirm({
-    title: "Eliminar producto",
-    message: `¿Estás seguro de eliminar <strong>${nombre}</strong>? El producto dejará de aparecer en el sistema. Su historial de ventas y movimientos se conservará.`,
-    confirmText: "Eliminar",
-    confirmClass: "btn--danger",
+    title: activo ? "Desactivar producto" : "Reactivar producto",
+    message: activo
+      ? `¿Desactivar <strong>${nombre}</strong>? No podrá agregarse a nuevos movimientos ni inventarios, pero su historial se conservará.`
+      : `¿Reactivar <strong>${nombre}</strong>? Volverá a estar disponible en el sistema.`,
+    confirmText: activo ? "Desactivar" : "Reactivar",
+    confirmClass: activo ? "btn--danger" : "btn--secondary",
     onConfirm: async () => {
-      await productosApi.remove(id);
-      toast.success("Producto eliminado correctamente.");
-      await store.refreshProductos();
-      await cargarProductos();
+      try {
+        activo
+          ? await productosApi.desactivar(id)
+          : await productosApi.activar(id);
+        toast.success(
+          activo
+            ? "Producto desactivado correctamente."
+            : "Producto reactivado correctamente.",
+        );
+        await store.refreshProductos();
+        await cargarProductos();
+      } catch (error) {
+        toast.error(
+          activo
+            ? "No se pudo desactivar el producto."
+            : "No se pudo reactivar el producto.",
+        );
+        console.error(error);
+      }
     },
   });
 }
 
 // ─── Mapear datos del formulario al formato que espera el API ─────────────────
-// El API de productos espera categoria: { idCategoria } y proveedor: { idProveedor }
 
 function mapearParaApi(formData) {
   return {
@@ -281,7 +308,4 @@ function mapearParaApi(formData) {
 // ─── Inicialización ───────────────────────────────────────────────────────────
 
 btnNuevo.addEventListener("click", abrirCrear);
-
-// buildFields carga los catálogos del store (con caché),
-// luego carga los productos. Todo en paralelo donde se puede.
 buildFields().then(() => cargarProductos());

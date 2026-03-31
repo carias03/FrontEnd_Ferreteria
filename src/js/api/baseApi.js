@@ -71,16 +71,20 @@ export class BaseApi {
     if (response.status === 204) return null;
 
     let data = null;
+    let text = null;
+
     try {
-      data = await response.json();
+      text = await response.text();
+      data = JSON.parse(text);
     } catch {
-      // No era JSON
+      // No era JSON — quedó como texto plano en `text`
     }
 
     if (!response.ok) {
       const message =
         data?.message ||
         data?.error ||
+        text || // texto plano del backend
         `Error ${response.status}: ${response.statusText}`;
       throw new ApiError(message, response.status, data);
     }

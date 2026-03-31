@@ -49,7 +49,9 @@ function inicializarFechas() {
 
 async function cargarMapas() {
   try {
-    // Inventario de la sucursal → mapa idInventario → producto
+    // Inventario de la sucursal → mapa idInventario → producto.
+    // Se usa getAll() del endpoint (sin filtro de estado en el backend) para
+    // que los productos desactivados sigan apareciendo en el historial.
     if (sucursalActual) {
       const inventario = await inventarioApi.getBySucursal(sucursalActual);
       mapaInventario = {};
@@ -242,12 +244,19 @@ function inicializarTabla(data) {
 // ─── Registrar movimiento ─────────────────────────────────────────────────────
 
 async function abrirNuevoMovimiento() {
+  // Se trae TODO el inventario de la sucursal, incluyendo productos
+  // desactivados, porque pueden seguir teniendo stock físico y necesitar
+  // ajustes (ej: salida por merma, devolución, corrección de conteo).
   const inventario = await inventarioApi.getBySucursal(sucursalActual);
 
-  const productosOptions = inventario.map((i) => ({
-    value: i.idInventario,
-    label: `${i.producto?.codigo ?? "?"} — ${i.producto?.nombre ?? "Producto"} (stock: ${i.cantidad})`,
-  }));
+  const productosOptions = inventario.map((i) => {
+    const activo = i.producto?.estado !== false;
+    const sufijo = activo ? "" : " [inactivo]";
+    return {
+      value: i.idInventario,
+      label: `${i.producto?.codigo ?? "?"} — ${i.producto?.nombre ?? "Producto"}${sufijo} (stock: ${i.cantidad})`,
+    };
+  });
 
   if (productosOptions.length === 0) {
     toast.error("No hay productos en el inventario de esta sucursal.");

@@ -176,10 +176,19 @@ function confirmarEliminar(id, nombre) {
     confirmText: "Eliminar",
     confirmClass: "btn--danger",
     onConfirm: async () => {
-      await categoriasApi.remove(id);
-      toast.success("Categoría eliminada correctamente.");
-      await store.refreshCategorias();
-      await cargarCategorias();
+      try {
+        await categoriasApi.remove(id);
+        toast.success("Categoría eliminada correctamente.");
+        await store.refreshCategorias();
+        await cargarCategorias();
+      } catch (error) {
+        if (error.status === 409) {
+          toast.error(error.message);
+        } else {
+          toast.error("No se pudo eliminar la categoría.");
+          console.error(error);
+        }
+      }
     },
   });
 }
