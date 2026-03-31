@@ -152,7 +152,7 @@ function inicializarTabla(data) {
         data: null,
         render: (row) => {
           if (!row.fecha) return "—";
-          const fecha = new Date(row.fecha.replace(" ", "T"));
+          const fecha = new Date(row.fecha.replace(" ", "T") + "Z");
           return fecha.toLocaleString("es-CR", {
             year: "numeric",
             month: "2-digit",
