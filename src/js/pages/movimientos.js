@@ -152,15 +152,13 @@ function inicializarTabla(data) {
         data: null,
         render: (row) => {
           if (!row.fecha) return "—";
-          // Convertir fecha UTC de la BD a timezone local del navegador
-          const fecha = new Date(row.fecha);
-          return fecha.toLocaleString("es-AR", {
+          const fecha = new Date(row.fecha.replace(" ", "T"));
+          return fecha.toLocaleString("es-CR", {
             year: "numeric",
             month: "2-digit",
             day: "2-digit",
             hour: "2-digit",
             minute: "2-digit",
-            second: "2-digit",
           });
         },
       },
