@@ -258,6 +258,19 @@
   }
 }
 
+// ── Selector de cambio de estado (footer modal detalle) ──────────────────────
+
+.estado-change-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto; // empuja el botón Cerrar hacia la derecha
+
+  .select-wrapper {
+    min-width: 160px;
+  }
+}
+
 // ── Form-row (dos columnas en modal) ─────────────────────────────────────────
 
 .form-row {

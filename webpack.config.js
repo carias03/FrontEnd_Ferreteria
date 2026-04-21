@@ -5,7 +5,6 @@ const webpack = require("webpack");
 
 const pages = [
   "login",
-  "dashboard",
   "productos",
   "categorias",
   "proveedores",
@@ -116,7 +115,6 @@ module.exports = (env, argv) => {
         rewrites: [
           { from: /^\/$/, to: "/login.html" },
           { from: /^\/login$/, to: "/login.html" },
-          { from: /^\/dashboard$/, to: "/dashboard.html" },
           { from: /^\/productos$/, to: "/productos.html" },
           { from: /^\/categorias$/, to: "/categorias.html" },
           { from: /^\/proveedores$/, to: "/proveedores.html" },

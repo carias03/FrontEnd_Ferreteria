@@ -144,12 +144,12 @@ function inicializarTabla(data) {
         orderable: false,
         className: "text-center",
         render: (row) => `
-          <div class="table-actions" style="justify-content:center">
-            <button class="btn btn--secondary btn--sm btn--icon btn-ver-detalle"
-                    data-id="${row.idVenta}" title="Ver detalle">
-              <i class="bi bi-eye"></i>
-            </button>
-          </div>`,
+            <div class="table-actions" style="justify-content:center">
+              <button class="btn btn--secondary btn--sm btn--icon btn-ver-detalle"
+                      data-id="${row.idVenta}" title="Ver detalle">
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>`,
       },
     ],
   });
@@ -228,19 +228,19 @@ function renderDetalleVenta(venta) {
   const filas = detalles
     .map(
       (d) => `
-      <tr>
-        <td>
-          ${
-            d.producto?.codigo
-              ? `<span style="font-family:monospace;font-size:12px;color:var(--color-text-muted)">${d.producto.codigo}</span>
-                 <span style="margin-left:6px">${d.producto.nombre}</span>`
-              : (d.producto?.nombre ?? `#${d.idProducto}`)
-          }
-        </td>
-        <td class="text-center">${d.cantidad}</td>
-        <td class="text-end">${formatColones(d.precioUnitario)}</td>
-        <td class="text-end"><strong>${formatColones(d.subtotal)}</strong></td>
-      </tr>`,
+        <tr>
+          <td>
+            ${
+              d.producto?.codigo
+                ? `<span style="font-family:monospace;font-size:12px;color:var(--color-text-muted)">${d.producto.codigo}</span>
+                  <span style="margin-left:6px">${d.producto.nombre}</span>`
+                : (d.producto?.nombre ?? `#${d.idProducto}`)
+            }
+          </td>
+          <td class="text-center">${d.cantidad}</td>
+          <td class="text-end">${formatColones(d.precioUnitario)}</td>
+          <td class="text-end"><strong>${formatColones(d.subtotal)}</strong></td>
+        </tr>`,
     )
     .join("");
 
@@ -255,58 +255,58 @@ function renderDetalleVenta(venta) {
     : "—";
 
   return `
-    <div class="detalle-grid">
-      <div class="detalle-item">
-        <span class="detalle-label">Sucursal</span>
-        <span class="detalle-value">${venta.sucursal?.nombre ?? "—"}</span>
+      <div class="detalle-grid">
+        <div class="detalle-item">
+          <span class="detalle-label">Sucursal</span>
+          <span class="detalle-value">${venta.sucursal?.nombre ?? "—"}</span>
+        </div>
+        <div class="detalle-item">
+          <span class="detalle-label">Usuario</span>
+          <span class="detalle-value">${mapaUsuarios[venta.idUsuario] ?? `#${venta.idUsuario}`}</span>
+        </div>
+        <div class="detalle-item">
+          <span class="detalle-label">Fecha</span>
+          <span class="detalle-value">${fechaFormateada}</span>
+        </div>
+        <div class="detalle-item">
+          <span class="detalle-label">Total</span>
+          <span class="detalle-value" style="font-weight:700">
+            ${formatColones(venta.total)}
+          </span>
+        </div>
       </div>
-      <div class="detalle-item">
-        <span class="detalle-label">Usuario</span>
-        <span class="detalle-value">${mapaUsuarios[venta.idUsuario] ?? `#${venta.idUsuario}`}</span>
-      </div>
-      <div class="detalle-item">
-        <span class="detalle-label">Fecha</span>
-        <span class="detalle-value">${fechaFormateada}</span>
-      </div>
-      <div class="detalle-item">
-        <span class="detalle-label">Total</span>
-        <span class="detalle-value" style="font-weight:700">
-          ${formatColones(venta.total)}
-        </span>
-      </div>
-    </div>
 
-    <div class="venta-items-table-wrapper" style="margin-top:16px">
-      <table class="venta-items-table">
-        <thead>
-          <tr>
-            <th>Producto</th>
-            <th class="text-center" style="width:80px">Cant.</th>
-            <th class="text-end" style="width:140px">Precio unit.</th>
-            <th class="text-end" style="width:140px">Subtotal</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${
-            filas ||
-            `<tr><td colspan="4" class="text-center"
-              style="color:var(--color-text-muted);font-style:italic;padding:16px 0">
-              Sin productos registrados.
-            </td></tr>`
-          }
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="3" class="text-end" style="font-weight:600;padding-right:12px">
-              Total:
-            </td>
-            <td class="text-end" style="font-weight:700;font-size:15px">
-              ${formatColones(venta.total)}
-            </td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>`;
+      <div class="venta-items-table-wrapper" style="margin-top:16px">
+        <table class="venta-items-table">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th class="text-center" style="width:80px">Cant.</th>
+              <th class="text-end" style="width:140px">Precio unit.</th>
+              <th class="text-end" style="width:140px">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${
+              filas ||
+              `<tr><td colspan="4" class="text-center"
+                style="color:var(--color-text-muted);font-style:italic;padding:16px 0">
+                Sin productos registrados.
+              </td></tr>`
+            }
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" class="text-end" style="font-weight:600;padding-right:12px">
+                Total:
+              </td>
+              <td class="text-end" style="font-weight:700;font-size:15px">
+                ${formatColones(venta.total)}
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>`;
 }
 
 // ─── Modal nueva venta — poblar selects ───────────────────────────────────────
@@ -395,24 +395,24 @@ function renderItemsVenta() {
     tr.className = "item-row";
 
     tr.innerHTML = `
-      <td>
-        ${
-          item.codigo
-            ? `<span style="font-family:monospace;font-size:12px;color:var(--color-text-muted)">${item.codigo}</span> `
-            : ""
-        }
-        ${item.nombre}
-      </td>
-      <td class="text-center">${item.cantidad}</td>
-      <td class="text-end">${formatColones(item.precioUnitario)}</td>
-      <td class="text-end"><strong>${formatColones(subtotal)}</strong></td>
-      <td class="text-center">
-        <button class="btn btn--ghost btn--sm btn--icon btn-quitar-item"
-                data-idx="${idx}" title="Quitar">
-          <i class="bi bi-x-lg" style="color:var(--color-danger)"></i>
-        </button>
-      </td>
-    `;
+        <td>
+          ${
+            item.codigo
+              ? `<span style="font-family:monospace;font-size:12px;color:var(--color-text-muted)">${item.codigo}</span> `
+              : ""
+          }
+          ${item.nombre}
+        </td>
+        <td class="text-center">${item.cantidad}</td>
+        <td class="text-end">${formatColones(item.precioUnitario)}</td>
+        <td class="text-end"><strong>${formatColones(subtotal)}</strong></td>
+        <td class="text-center">
+          <button class="btn btn--ghost btn--sm btn--icon btn-quitar-item"
+                  data-idx="${idx}" title="Quitar">
+            <i class="bi bi-x-lg" style="color:var(--color-danger)"></i>
+          </button>
+        </td>
+      `;
 
     itemsTbody.insertBefore(tr, itemsEmpty);
   });

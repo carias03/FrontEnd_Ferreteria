@@ -9,7 +9,7 @@ import { authApi } from "../api/authApi.js";
 import { saveSession, isLoggedIn } from "../utils/auth.js";
 
 if (isLoggedIn()) {
-  window.location.href = "/dashboard.html";
+  window.location.href = "/movimientos.html";
 }
 
 const form = document.getElementById("form-login");
@@ -80,7 +80,7 @@ form.addEventListener("submit", async (e) => {
     const userData = response.usuario ?? response;
     saveSession(userData);
 
-    window.location.href = "/dashboard.html";
+    window.location.href = "/movimientos.html";
   } catch (error) {
     if (error.status === 401 || error.status === 403) {
       showError("Usuario o contraseña incorrectos.");

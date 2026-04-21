@@ -343,9 +343,7 @@
   padding: 24px;
 }
 
-// ── Stats grid (dashboard) ────────────────────
-// Reemplaza el .form-row--3 hardcodeado —
-// así el grid se adapta solo al espacio disponible
+// ── Stats grid ────────────────────
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

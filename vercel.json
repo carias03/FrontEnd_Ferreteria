@@ -7,7 +7,6 @@
     { "src": "^/$", "dest": "/login" },
 
     { "src": "^/login$", "dest": "/login.html" },
-    { "src": "^/dashboard$", "dest": "/dashboard.html" },
     { "src": "^/productos$", "dest": "/productos.html" },
     { "src": "^/categorias$", "dest": "/categorias.html" },
     { "src": "^/proveedores$", "dest": "/proveedores.html" },

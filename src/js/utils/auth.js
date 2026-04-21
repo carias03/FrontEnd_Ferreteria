@@ -69,7 +69,7 @@ export function requireAuth(requiredRoles = []) {
     if (!allowed) {
       // Sesión válida pero sin el rol requerido
       alert("No tenés permisos para acceder a esta sección.");
-      window.location.href = "/dashboard.html";
+      window.location.href = "/movimientos.html";
       return false;
     }
   }
