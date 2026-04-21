@@ -150,9 +150,16 @@ function inicializarTabla(data) {
       {
         title: "Fecha",
         data: null,
-        render: (row) => {
-          if (!row.fecha) return "—";
-          const fecha = new Date(row.fecha.replace(" ", "T") + "Z");
+        type: "num",
+        render: (row, type) => {
+          if (!row?.fecha) return "—";
+
+          const fecha = new Date(row.fecha);
+
+          if (type === "sort" || type === "type") {
+            return fecha.getTime();
+          }
+
           return fecha.toLocaleString("es-CR", {
             year: "numeric",
             month: "2-digit",

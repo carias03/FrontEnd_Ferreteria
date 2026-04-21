@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23E85D04'/%3E%3Cg transform='translate(50,50)' text-anchor='middle' dominant-baseline='middle' fill='white' font-family='Arial' font-size='55' font-weight='bold'%3E%3Ctext%3E%F0%9F%9B%A0%3C/text%3E%3C/g%3E%3C/svg%3E"
+    />
+    <title>Ventas — FerreSystem</title>
+  </head>
+  <body>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar__brand">
+        <div class="sidebar__brand-icon"><i class="bi bi-tools"></i></div>
+        <div class="sidebar__brand-text">
+          <span>FerreSystem</span>
+          <span>Gestión de Inventario</span>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <div class="sidebar__section">
+          <div class="sidebar__section-label">General</div>
+          <a href="dashboard" class="sidebar__item" data-page="dashboard">
+            <i class="bi bi-grid sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Dashboard</span>
+          </a>
+        </div>
+        <div class="sidebar__section">
+          <div class="sidebar__section-label">Catálogos</div>
+          <a href="productos" class="sidebar__item" data-page="productos">
+            <i class="bi bi-box-seam sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Productos</span>
+          </a>
+          <a href="categorias" class="sidebar__item" data-page="categorias">
+            <i class="bi bi-tag sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Categorías</span>
+          </a>
+          <a href="proveedores" class="sidebar__item" data-page="proveedores">
+            <i class="bi bi-truck sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Proveedores</span>
+          </a>
+          <a href="sucursales" class="sidebar__item" data-page="sucursales">
+            <i class="bi bi-shop sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Sucursales</span>
+          </a>
+        </div>
+        <div class="sidebar__section">
+          <div class="sidebar__section-label">Inventario</div>
+          <a href="inventario" class="sidebar__item" data-page="inventario">
+            <i class="bi bi-archive sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Stock</span>
+          </a>
+          <a href="movimientos" class="sidebar__item" data-page="movimientos">
+            <i class="bi bi-arrow-left-right sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Movimientos</span>
+          </a>
+        </div>
+        <div class="sidebar__section">
+          <div class="sidebar__section-label">Operaciones</div>
+          <a href="ventas" class="sidebar__item active" data-page="ventas">
+            <i class="bi bi-receipt sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Ventas</span>
+          </a>
+          <a href="ordenes" class="sidebar__item" data-page="ordenes">
+            <i class="bi bi-cart-check sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Órdenes de Compra</span>
+          </a>
+        </div>
+        <div class="sidebar__section">
+          <div class="sidebar__section-label">Administración</div>
+          <a href="usuarios" class="sidebar__item" data-page="usuarios">
+            <i class="bi bi-people sidebar__item-icon"></i>
+            <span class="sidebar__item-label">Usuarios</span>
+          </a>
+        </div>
+      </nav>
+      <div class="sidebar__footer">
+        <div class="sidebar__user">
+          <div class="sidebar__user-avatar" id="sidebar-avatar">U</div>
+          <div class="sidebar__user-info">
+            <span id="sidebar-username">Usuario</span>
+            <span id="sidebar-role">Sin rol</span>
+          </div>
+          <button
+            class="sidebar__user-logout"
+            id="btn-logout"
+            title="Cerrar sesión"
+          >
+            <i class="bi bi-box-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="layout">
+      <header class="topbar">
+        <button class="topbar__menu-btn" id="sidebar-toggle" aria-label="Menú">
+          <i class="bi bi-list"></i>
+        </button>
+        <h1 class="topbar__title">Ventas</h1>
+
+        <div class="topbar__actions ventas-controls">
+          <!-- Sucursal -->
+          <div class="select-wrapper ventas-controls__sucursal">
+            <select id="select-sucursal" class="form-control">
+              <option value="">Cargando...</option>
+            </select>
+            <i class="bi bi-chevron-down select-icon"></i>
+          </div>
+
+          <!-- Fechas -->
+          <input
+            type="date"
+            id="input-desde"
+            class="form-control ventas-controls__fecha"
+          />
+          <input
+            type="date"
+            id="input-hasta"
+            class="form-control ventas-controls__fecha"
+          />
+
+          <!-- Buscar -->
+          <button
+            class="btn btn--secondary ventas-controls__buscar"
+            id="btn-buscar"
+          >
+            <i class="bi bi-search"></i>
+          </button>
+
+          <!-- Nueva venta -->
+          <button
+            class="btn btn--primary ventas-controls__nuevo"
+            id="btn-nueva-venta"
+          >
+            <i class="bi bi-plus-lg"></i>
+            <span class="btn-label">Nueva venta</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <!-- Cards resumen -->
+        <div class="stats-grid ventas" style="margin-bottom: 24px">
+          <div class="stat-card">
+            <div class="stat-card__icon stat-card__icon--success">
+              <i class="bi bi-receipt"></i>
+            </div>
+            <div class="stat-card__info">
+              <div class="stat-card__value" id="stat-total-ventas">—</div>
+              <div class="stat-card__label">Ventas en el período</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__icon stat-card__icon--info">
+              <i class="bi bi-cash-coin"></i>
+            </div>
+            <div class="stat-card__info">
+              <div class="stat-card__value" id="stat-monto-total">—</div>
+              <div class="stat-card__label">Monto total</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabla -->
+        <div class="card">
+          <div class="card__header">
+            <h3><i class="bi bi-receipt"></i> Historial de ventas</h3>
+          </div>
+          <div class="card__body" style="padding: 0; overflow-x: auto">
+            <table id="tabla-ventas" style="width: 100%">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Sucursal</th>
+                  <th>Usuario</th>
+                  <th>Fecha</th>
+                  <th>Total</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ── Modal de nueva venta ───────────────────────────────────────── -->
+    <div class="modal-overlay" id="venta-overlay">
+      <div
+        class="modal modal--lg"
+        id="venta-modal"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div class="modal__header">
+          <h3 id="venta-modal-title">Nueva venta</h3>
+          <button class="modal__close" id="venta-modal-close">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        <div class="modal__body">
+          <!-- Encabezado -->
+          <div class="venta-seccion">
+            <h4 class="venta-seccion__titulo">
+              <i class="bi bi-info-circle"></i> Datos de la venta
+            </h4>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="venta-sucursal">
+                  Sucursal <span style="color: var(--color-danger)">*</span>
+                </label>
+                <div class="select-wrapper">
+                  <select id="venta-sucursal" class="form-control"></select>
+                  <i class="bi bi-chevron-down select-icon"></i>
+                </div>
+                <span
+                  class="form-error"
+                  id="error-venta-sucursal"
+                  style="display: none"
+                ></span>
+              </div>
+            </div>
+          </div>
+
+          <hr class="venta-divider" />
+
+          <!-- Productos -->
+          <div class="venta-seccion">
+            <h4 class="venta-seccion__titulo">
+              <i class="bi bi-box-seam"></i> Productos
+            </h4>
+
+            <!-- Fila de ingreso rápido -->
+            <div class="venta-add-row">
+              <div class="form-group" style="flex: 2">
+                <label for="venta-prod-select">Producto</label>
+                <div class="select-wrapper">
+                  <select id="venta-prod-select" class="form-control">
+                    <option value="" hidden>Seleccioná un producto</option>
+                  </select>
+                  <i class="bi bi-chevron-down select-icon"></i>
+                </div>
+              </div>
+              <div class="form-group" style="flex: 1">
+                <label for="venta-prod-cantidad">Cantidad</label>
+                <input
+                  type="number"
+                  id="venta-prod-cantidad"
+                  class="form-control"
+                  min="1"
+                  value="1"
+                />
+              </div>
+              <div
+                class="form-group"
+                style="flex: 0 0 auto; align-self: flex-end"
+              >
+                <button class="btn btn--primary" id="btn-agregar-item">
+                  <i class="bi bi-plus-lg"></i> Agregar
+                </button>
+              </div>
+            </div>
+
+            <!-- Tabla de items -->
+            <div class="venta-items-table-wrapper">
+              <table class="venta-items-table" id="venta-items-table">
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th class="text-center" style="width: 90px">Cantidad</th>
+                    <th class="text-end" style="width: 140px">Precio unit.</th>
+                    <th class="text-end" style="width: 140px">Subtotal</th>
+                    <th style="width: 50px"></th>
+                  </tr>
+                </thead>
+                <tbody id="venta-items-tbody">
+                  <tr id="venta-items-empty">
+                    <td
+                      colspan="3"
+                      class="text-center"
+                      style="
+                        color: var(--color-text-muted);
+                        font-style: italic;
+                        padding: 20px 0;
+                      "
+                    >
+                      Agregá al menos un producto para continuar.
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr id="venta-total-row" style="display: none">
+                    <td
+                      colspan="3"
+                      class="text-end"
+                      style="font-weight: 600; padding-right: 12px"
+                    >
+                      Total:
+                    </td>
+                    <td
+                      class="text-end"
+                      style="font-weight: 700; font-size: 15px"
+                      id="venta-total-label"
+                    >
+                      —
+                    </td>
+                    <td></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="modal__footer" id="venta-modal-footer">
+          <button class="btn btn--secondary" id="venta-btn-cancelar">
+            Cancelar
+          </button>
+          <button class="btn btn--primary" id="venta-btn-confirmar">
+            <i class="bi bi-check-lg"></i> Registrar venta
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Modal de detalle de venta ─────────────────────────────────── -->
+    <div class="modal-overlay" id="detalle-venta-overlay">
+      <div
+        class="modal modal--lg"
+        id="detalle-venta-modal"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div class="modal__header">
+          <h3 id="detalle-venta-title">Detalle de venta</h3>
+          <button class="modal__close" id="detalle-venta-close">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        <div class="modal__body" id="detalle-venta-body"></div>
+        <div class="modal__footer">
+          <button class="btn btn--secondary" id="detalle-venta-btn-cerrar">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -38,7 +38,7 @@ export function createTabla(selector, options = {}) {
     };
 
     if (col.render) {
-      base.render = (_data, _type, row) => col.render(row);
+      base.render = (data, type, row) => col.render(row, type, data);
     }
 
     return base;
